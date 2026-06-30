@@ -514,6 +514,64 @@ print(f"AUC      : {round(auc_stack, 4)}")
 
 
 
+
+
+
+
+
+
+# Stacking with 5 Base Models
+print("\n------STACKING (RF + XGB + LGBM + CAT + SVM)-----\n")
+
+base_models_v2 = [
+    ('rf',    RandomForestClassifier(n_estimators=100, random_state=42)),
+    ('xgb',   XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+    ('lgbm',  LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+    ('cat',   CatBoostClassifier(iterations=100, random_seed=42, verbose=0)),
+    ('svm',   SVC(kernel='rbf', random_state=42, probability=True))
+]
+
+stacking_model_v2 = StackingClassifier(
+    estimators=base_models_v2,
+    final_estimator=LogisticRegression(max_iter=1000),
+    cv=5
+)
+
+stacking_model_v2.fit(X_train_sm, y_train_sm)
+
+# Prediction
+y_pred_stack_v2 = stacking_model_v2.predict(X_test)
+y_prob_stack_v2 = stacking_model_v2.predict_proba(X_test)[:, 1]
+
+# Evaluation
+acc_stack_v2 = accuracy_score(y_test, y_pred_stack_v2)
+mcc_stack_v2 = matthews_corrcoef(y_test, y_pred_stack_v2)
+auc_stack_v2 = roc_auc_score(y_test, y_prob_stack_v2)
+
+print(f"Accuracy : {round(acc_stack_v2 * 100, 2)}%")
+print(f"MCC      : {round(mcc_stack_v2, 4)}")
+print(f"AUC      : {round(auc_stack_v2, 4)}")
+
+print("\n" + "="*50)
+print("COMPARISON")
+print("="*50)
+print(f"Stacking (3 models): Acc=86.10%  MCC=0.6408  AUC=0.9047")
+print(f"Stacking (5 models): Acc={round(acc_stack_v2*100,2)}%  MCC={round(mcc_stack_v2,4)}  AUC={round(auc_stack_v2,4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #   ENSEMBLE + FEATURE SELECTION
 
 print("\n------ENSEMBLE + FEATURE SELECTION-----\n")
