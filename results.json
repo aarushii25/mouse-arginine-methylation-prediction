@@ -1401,5 +1401,85 @@
             "MCC": 0.5067,
             "AUC": 0.8462
         }
+    },
+    {
+        "date_time": "2026-06-30 13:01:57",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        "<----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        },
+        "<----ESM + GridSearchCV---->": {
+            "Accuracy": 83.18,
+            "MCC": 0.5714,
+            "AUC": 0.8845
+        },
+        "<----Ensemble (RF+XGB+LGBM)---->": {
+            "Accuracy": 85.94,
+            "MCC": 0.6361,
+            "AUC": 0.9075
+        },
+        "<----Feature Selection---->": {
+            "Accuracy": 85.15,
+            "MCC": 0.6177,
+            "AUC": 0.9012
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 76.54,
+            "MCC": 0.4999,
+            "AUC": 0.848
+        }
     }
 ]

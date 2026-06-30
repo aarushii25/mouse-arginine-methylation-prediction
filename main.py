@@ -27,6 +27,10 @@ from torch.utils.data import DataLoader, TensorDataset
 from sklearn.ensemble import VotingClassifier                                                       # for VoteClassifier
 from sklearn.feature_selection import SelectFromModel                                               # for FeatureSelection
 
+from sklearn.ensemble import StackingClassifier, VotingClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_selection import SelectFromModel
+
 # DATA LOADING
 # ASYMMETRIC
 asym_folder = "Asymmetric_dimethylarginine"
@@ -470,6 +474,112 @@ print(f"AUC      : {round(auc_knn, 4)}")
 
 
 
+
+
+
+
+
+#   STACKING (RF + XGB + LGBM → LogReg)
+
+print("\n------ STACKING (RF + XGB + LGBM → LogReg)-----\n")
+
+base_models = [
+    ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+    ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+    ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+]
+
+stacking_model = StackingClassifier(
+    estimators=base_models,
+    final_estimator=LogisticRegression(max_iter=1000),
+    cv=5
+)
+stacking_model.fit(X_train_sm, y_train_sm)
+
+y_pred_stack = stacking_model.predict(X_test)
+y_prob_stack = stacking_model.predict_proba(X_test)[:, 1]
+
+acc_stack = accuracy_score(y_test, y_pred_stack)
+mcc_stack = matthews_corrcoef(y_test, y_pred_stack)
+auc_stack = roc_auc_score(y_test, y_prob_stack)
+
+print(f"Accuracy : {round(acc_stack * 100, 2)}%")
+print(f"MCC      : {round(mcc_stack, 4)}")
+print(f"AUC      : {round(auc_stack, 4)}")
+
+
+
+
+
+
+
+
+#   ENSEMBLE + FEATURE SELECTION
+
+print("\n------ENSEMBLE + FEATURE SELECTION-----\n")
+
+selector = SelectFromModel(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    max_features=100
+)
+selector.fit(X_train_sm, y_train_sm)
+X_train_fs = selector.transform(X_train_sm)
+X_test_fs  = selector.transform(X_test)
+
+ensemble_fs_model = VotingClassifier(
+    estimators=[
+        ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+        ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+        ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+    ],
+    voting='soft'
+)
+ensemble_fs_model.fit(X_train_fs, y_train_sm)
+
+
+y_pred_ens_fs = ensemble_fs_model.predict(X_test_fs)
+y_prob_ens_fs = ensemble_fs_model.predict_proba(X_test_fs)[:, 1]
+
+acc_ens_fs = accuracy_score(y_test, y_pred_ens_fs)
+mcc_ens_fs = matthews_corrcoef(y_test, y_pred_ens_fs)
+auc_ens_fs = roc_auc_score(y_test, y_prob_ens_fs)
+
+print(f"Accuracy : {round(acc_ens_fs * 100, 2)}%")
+print(f"MCC      : {round(mcc_ens_fs, 4)}")
+print(f"AUC      : {round(auc_ens_fs, 4)}")
+
+
+
+#   LOGISTIC REGRESSION
+
+print("\n------LOGISTIC REGRESSION-----\n")
+
+lr_model = LogisticRegression(max_iter=1000, random_state=42)
+lr_model.fit(X_train_sm, y_train_sm)
+
+
+y_pred_lr = lr_model.predict(X_test)
+y_prob_lr = lr_model.predict_proba(X_test)[:, 1]
+
+acc_lr = accuracy_score(y_test, y_pred_lr)
+mcc_lr = matthews_corrcoef(y_test, y_pred_lr)
+auc_lr = roc_auc_score(y_test, y_prob_lr)
+
+print(f"Accuracy : {round(acc_lr * 100, 2)}%")
+print(f"MCC      : {round(mcc_lr, 4)}")
+print(f"AUC      : {round(auc_lr, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
 # KNN + ESM
 print("\n------KNN + ESM-----\n")
 
@@ -747,6 +857,54 @@ print(f"AUC      : {round(auc_esm_grid, 4)}")
 
 
 
+
+
+
+
+
+
+
+#   STACKING + ESM
+
+print("\n------STACKING + ESM-----\n")
+
+X_esm_stack = np.hstack([X_aac, X_dpc, X_entropy, X_phys, X_esm])
+y_esm_stack = df["label"].values
+
+X_train_es, X_test_es, y_train_es, y_test_es = train_test_split(
+    X_esm_stack, y_esm_stack,
+    test_size=0.2,
+    random_state=42,
+    stratify=y_esm_stack
+)
+
+smote_es = SMOTE(random_state=42)
+X_train_es_sm, y_train_es_sm = smote_es.fit_resample(X_train_es, y_train_es)
+
+base_models_esm = [
+    ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+    ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+    ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+]
+
+stacking_esm_model = StackingClassifier(
+    estimators=base_models_esm,
+    final_estimator=LogisticRegression(max_iter=1000),
+    cv=5
+)
+stacking_esm_model.fit(X_train_es_sm, y_train_es_sm)
+
+
+y_pred_stack_esm = stacking_esm_model.predict(X_test_es)
+y_prob_stack_esm = stacking_esm_model.predict_proba(X_test_es)[:, 1]
+
+acc_stack_esm = accuracy_score(y_test_es, y_pred_stack_esm)
+mcc_stack_esm = matthews_corrcoef(y_test_es, y_pred_stack_esm)
+auc_stack_esm = roc_auc_score(y_test_es, y_prob_stack_esm)
+
+print(f"Accuracy : {round(acc_stack_esm * 100, 2)}%")
+print(f"MCC      : {round(mcc_stack_esm, 4)}")
+print(f"AUC      : {round(auc_stack_esm, 4)}")
 
 
 
@@ -1078,7 +1236,27 @@ new_result = {
     "Accuracy": round(acc_nn * 100, 2),
     "MCC"     : round(mcc_nn, 4),
     "AUC"     : round(auc_nn, 4)
-    }
+    },
+    "<----Stacking (RF+XGB+LGBM)---->": {
+    "Accuracy": round(acc_stack * 100, 2),
+    "MCC"     : round(mcc_stack, 4),
+    "AUC"     : round(auc_stack, 4)
+},
+"<----Ensemble + Feature Selection---->": {
+    "Accuracy": round(acc_ens_fs * 100, 2),
+    "MCC"     : round(mcc_ens_fs, 4),
+    "AUC"     : round(auc_ens_fs, 4)
+},
+"<----Logistic Regression---->": {
+    "Accuracy": round(acc_lr * 100, 2),
+    "MCC"     : round(mcc_lr, 4),
+    "AUC"     : round(auc_lr, 4)
+},
+"<----Stacking + ESM---->": {
+    "Accuracy": round(acc_stack_esm * 100, 2),
+    "MCC"     : round(mcc_stack_esm, 4),
+    "AUC"     : round(auc_stack_esm, 4)
+}
 }
 
 if os.path.exists("results.json"):
