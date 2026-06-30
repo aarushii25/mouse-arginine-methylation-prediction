@@ -1,0 +1,1405 @@
+[
+    {
+        "date_time": "2026-06-25 06:09:14",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 06:14:11",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:17:29",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:26:01",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:35:59",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:43:45",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:47:47",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:51:42",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:52:55",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:54:05",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:55:33",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 10:58:11",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:01:03",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:12:50",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:16:28",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:17:51",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:58:42",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 11:59:42",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 12:02:30",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 12:05:36",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 12:07:41",
+        "accuracy": 85.62,
+        "mcc": 0.6273,
+        "auc": 0.8999,
+        "cv_mean": 86.82,
+        "cv_std": 1.17
+    },
+    {
+        "date_time": "2026-06-25 12:13:56",
+        "<----Random_Forest---->": {
+            "accuracy": 85.62,
+            "mcc": 0.6273,
+            "auc": 0.8999,
+            "cv_mean": 86.82,
+            "cv_std": 1.17
+        },
+        "<----XGBoost---->": {
+            "accuracy": 84.12,
+            "mcc": 0.5917,
+            "auc": 0.8958
+        }
+    },
+    {
+        "date_time": "2026-06-25 12:17:54",
+        "<----Random_Forest---->": {
+            "accuracy": 85.62,
+            "mcc": 0.6273,
+            "auc": 0.8999,
+            "cv_mean": 86.82,
+            "cv_std": 1.17
+        },
+        "<----XGBoost---->": {
+            "accuracy": 84.12,
+            "mcc": 0.5917,
+            "auc": 0.8958
+        }
+    },
+    {
+        "date_time": "2026-06-25 12:19:39",
+        "<----Random_Forest---->": {
+            "accuracy": 85.62,
+            "mcc": 0.6273,
+            "auc": 0.8999,
+            "cv_mean": 86.82,
+            "cv_std": 1.17
+        },
+        "<----XGBoost---->": {
+            "accuracy": 84.12,
+            "mcc": 0.5917,
+            "auc": 0.8958
+        }
+    },
+    {
+        "date_time": "2026-06-25 15:19:26",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        }
+    },
+    {
+        "date_time": "2026-06-25 15:20:07",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        }
+    },
+    {
+        "date_time": "2026-06-25 15:21:46",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        }
+    },
+    {
+        "date_time": "2026-06-25 15:22:49",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        }
+    },
+    {
+        "date_time": "2026-06-25 16:25:52",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        }
+    },
+    {
+        "date_time": "2026-06-25 16:31:44",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        }
+    },
+    {
+        "date_time": "2026-06-25 16:45:51",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        }
+    },
+    {
+        "date_time": "2026-06-25 16:54:29",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        }
+    },
+    {
+        "date_time": "2026-06-25 16:56:40",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        }
+    },
+    {
+        "date_time": "2026-06-28 15:10:33",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        }
+    },
+    {
+        "date_time": "2026-06-28 15:31:27",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        }
+    },
+    {
+        "date_time": "2026-06-28 15:36:57",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM Combined + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        }
+    },
+    {
+        "date_time": "2026-06-28 15:46:52",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        }
+    },
+    {
+        "date_time": "2026-06-28 15:52:58",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        }
+    },
+    {
+        "date_time": "2026-06-28 16:17:48",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        }
+    },
+    {
+        "date_time": "2026-06-28 16:37:17",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        }
+    },
+    {
+        "date_time": "2026-06-28 16:54:37",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        }
+    },
+    {
+        "date_time": "2026-06-28 17:31:34",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 78.44,
+            "MCC": 0.5067,
+            "AUC": 0.8505
+        }
+    },
+    {
+        "date_time": "2026-06-28 17:42:00",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.5082,
+            "AUC": 0.8499
+        }
+    },
+    {
+        "date_time": "2026-06-28 17:50:27",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 76.94,
+            "MCC": 0.5321,
+            "AUC": 0.8489
+        }
+    },
+    {
+        "date_time": "2026-06-28 19:04:18",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 78.52,
+            "MCC": 0.4983,
+            "AUC": 0.8503
+        }
+    },
+    {
+        "date_time": "2026-06-29 07:41:31",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 76.7,
+            "MCC": 0.5132,
+            "AUC": 0.8498
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        }
+    },
+    {
+        "date_time": "2026-06-29 09:22:39",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        }
+    },
+    {
+        "date_time": "2026-06-29 13:19:20",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 73.38,
+            "MCC": 0.4922,
+            "AUC": 0.8488
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        }
+    },
+    {
+        "date_time": "2026-06-29 15:13:49",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 76.7,
+            "MCC": 0.5202,
+            "AUC": 0.8466
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        },
+        "<----ESM + GRID---->": {
+            "Accuracy": 83.18,
+            "MCC": 0.5714,
+            "AUC": 0.8845
+        }
+    },
+    {
+        "date_time": "2026-06-29 15:44:53",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 77.65,
+            "MCC": 0.5379,
+            "AUC": 0.8519
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        },
+        "<----ESM + GRID---->": {
+            "Accuracy": 83.18,
+            "MCC": 0.5714,
+            "AUC": 0.8845
+        },
+        "<----ENSEMBLE(LGBM+RF+XGB---->) ": {
+            "Accuracy": 85.15,
+            "MCC": 0.6177,
+            "AUC": 0.9012
+        }
+    },
+    {
+        "date_time": "2026-06-29 16:04:14",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        " <----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 74.57,
+            "MCC": 0.506,
+            "AUC": 0.8493
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        },
+        "<----ESM + GRID---->": {
+            "Accuracy": 83.18,
+            "MCC": 0.5714,
+            "AUC": 0.8845
+        },
+        "<----ENSEMBLE(LGBM+RF+XGB---->) ": {
+            "Accuracy": 85.15,
+            "MCC": 0.6177,
+            "AUC": 0.9012
+        }
+    },
+    {
+        "date_time": "2026-06-29 16:29:15",
+        "<----Random_Forest---->": {
+            "Accuracy": 85.62,
+            "MCC": 0.6273,
+            "AUC": 0.8999,
+            "CV_Mean": 86.82,
+            "CV_Std": 1.17
+        },
+        "<----XGBoost---->": {
+            "Accuracy": 84.12,
+            "MCC": 0.5917,
+            "AUC": 0.8958
+        },
+        "<----CatBoost---->": {
+            "Accuracy": 82.54,
+            "MCC": 0.5536,
+            "AUC": 0.8791
+        },
+        "<----LightGBM---->": {
+            "Accuracy": 84.83,
+            "MCC": 0.6068,
+            "AUC": 0.902
+        },
+        "<----SVM---->": {
+            "Accuracy": 69.83,
+            "MCC": 0.3304,
+            "AUC": 0.7285
+        },
+        "<----ESM + RF---->": {
+            "Accuracy": 84.52,
+            "MCC": 0.6045,
+            "AUC": 0.8922
+        },
+        "<----ESM + SVM---->": {
+            "Accuracy": 75.28,
+            "MCC": 0.4734,
+            "AUC": 0.8315
+        },
+        "<----Hyperparameter Tuned RF---->": {
+            "Accuracy": 84.99,
+            "MCC": 0.6088,
+            "AUC": 0.9043
+        },
+        "<----Naive Bayes---->": {
+            "Accuracy": 69.35,
+            "MCC": 0.3905,
+            "AUC": 0.7364
+        },
+        "<----KNN---->": {
+            "Accuracy": 70.77,
+            "MCC": 0.412,
+            "AUC": 0.7938
+        },
+        "<----ESM + KNN---->": {
+            "Accuracy": 74.96,
+            "MCC": 0.4875,
+            "AUC": 0.838
+        },
+        "<----ESM + GridSearchCV---->": {
+            "Accuracy": 83.18,
+            "MCC": 0.5714,
+            "AUC": 0.8845
+        },
+        "<----Ensemble (RF+XGB+LGBM)---->": {
+            "Accuracy": 85.94,
+            "MCC": 0.6361,
+            "AUC": 0.9075
+        },
+        "<----Feature Selection---->": {
+            "Accuracy": 85.15,
+            "MCC": 0.6177,
+            "AUC": 0.9012
+        },
+        "<----Neural Network---->": {
+            "Accuracy": 78.12,
+            "MCC": 0.5067,
+            "AUC": 0.8462
+        }
+    }
+]
