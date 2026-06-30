@@ -1555,6 +1555,56 @@ pdf.drawString(50, ens_y - 60, f"{'MCC':<25} {round(mcc_ens, 4):>15}")
 pdf.drawString(50, ens_y - 75, f"{'AUC':<25} {round(auc_ens, 4):>15}")
 pdf.line(50, ens_y - 85, 550, ens_y - 85)
 
+pdf.showPage()
+
+# ─── STACKING ───
+pdf.setFont("Helvetica-Bold", 12)
+pdf.drawString(50, height - 50, "Classification Report Of Stacking (RF+XGB+LGBM):")
+pdf.setFont("Courier-Bold", 10)
+pdf.drawString(50, height - 70, f"{'Metric':<25} {'Score':>15}")
+pdf.line(50, height - 80, 550, height - 80)
+pdf.setFont("Courier", 10)
+pdf.drawString(50, height - 95, f"{'Accuracy':<25} {round(acc_stack * 100, 2):>14}%")
+pdf.drawString(50, height - 110, f"{'MCC':<25} {round(mcc_stack, 4):>15}")
+pdf.drawString(50, height - 125, f"{'AUC':<25} {round(auc_stack, 4):>15}")
+pdf.line(50, height - 135, 550, height - 135)
+
+# ─── ENSEMBLE + FS ───
+pdf.setFont("Helvetica-Bold", 12)
+pdf.drawString(50, height - 160, "Classification Report Of Ensemble + Feature Selection:")
+pdf.setFont("Courier-Bold", 10)
+pdf.drawString(50, height - 180, f"{'Metric':<25} {'Score':>15}")
+pdf.line(50, height - 190, 550, height - 190)
+pdf.setFont("Courier", 10)
+pdf.drawString(50, height - 205, f"{'Accuracy':<25} {round(acc_ens_fs * 100, 2):>14}%")
+pdf.drawString(50, height - 220, f"{'MCC':<25} {round(mcc_ens_fs, 4):>15}")
+pdf.drawString(50, height - 235, f"{'AUC':<25} {round(auc_ens_fs, 4):>15}")
+pdf.line(50, height - 245, 550, height - 245)
+
+# ─── LOGISTIC REGRESSION ───
+pdf.setFont("Helvetica-Bold", 12)
+pdf.drawString(50, height - 270, "Classification Report Of Logistic Regression:")
+pdf.setFont("Courier-Bold", 10)
+pdf.drawString(50, height - 290, f"{'Metric':<25} {'Score':>15}")
+pdf.line(50, height - 300, 550, height - 300)
+pdf.setFont("Courier", 10)
+pdf.drawString(50, height - 315, f"{'Accuracy':<25} {round(acc_lr * 100, 2):>14}%")
+pdf.drawString(50, height - 330, f"{'MCC':<25} {round(mcc_lr, 4):>15}")
+pdf.drawString(50, height - 345, f"{'AUC':<25} {round(auc_lr, 4):>15}")
+pdf.line(50, height - 355, 550, height - 355)
+
+# ─── STACKING + ESM ───
+pdf.setFont("Helvetica-Bold", 12)
+pdf.drawString(50, height - 380, "Classification Report Of Stacking + ESM:")
+pdf.setFont("Courier-Bold", 10)
+pdf.drawString(50, height - 400, f"{'Metric':<25} {'Score':>15}")
+pdf.line(50, height - 410, 550, height - 410)
+pdf.setFont("Courier", 10)
+pdf.drawString(50, height - 425, f"{'Accuracy':<25} {round(acc_stack_esm * 100, 2):>14}%")
+pdf.drawString(50, height - 440, f"{'MCC':<25} {round(mcc_stack_esm, 4):>15}")
+pdf.drawString(50, height - 455, f"{'AUC':<25} {round(auc_stack_esm, 4):>15}")
+pdf.line(50, height - 465, 550, height - 465)
+
 # New page
 pdf.showPage()
 
