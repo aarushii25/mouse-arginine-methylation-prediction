@@ -552,10 +552,6 @@ print(f"Accuracy : {round(acc_stack_v2 * 100, 2)}%")
 print(f"MCC      : {round(mcc_stack_v2, 4)}")
 print(f"AUC      : {round(auc_stack_v2, 4)}")
 
-print("\n" + "="*50)
-print("COMPARISON")
-print("="*50)
-print(f"Stacking (3 models): Acc=86.10%  MCC=0.6408  AUC=0.9047")
 print(f"Stacking (5 models): Acc={round(acc_stack_v2*100,2)}%  MCC={round(mcc_stack_v2,4)}  AUC={round(auc_stack_v2,4)}")
 
 
@@ -1212,6 +1208,113 @@ print(f"AUC      : {round(auc_esml, 4)}")
 
 
 
+# Two-Level (Deep) Stacking
+print("\n------Two-Level Stacking-----\n")
+
+from sklearn.model_selection import cross_val_predict
+
+# Level 0 — Base models
+level0_models = [
+    ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+    ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+    ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+    ('cat',  CatBoostClassifier(iterations=100, random_seed=42, verbose=0))
+]
+
+level0_train_preds = np.zeros((X_train_sm.shape[0], len(level0_models)))
+level0_test_preds  = np.zeros((X_test.shape[0], len(level0_models)))
+
+for i, (name, model) in enumerate(level0_models):
+    print(f"Training {name}...")
+    model.fit(X_train_sm, y_train_sm)
+    level0_train_preds[:, i] = cross_val_predict(model, X_train_sm, y_train_sm, cv=5, method='predict_proba')[:, 1]
+    level0_test_preds[:, i]  = model.predict_proba(X_test)[:, 1]
+
+
+level1_model = LogisticRegression(max_iter=1000, random_state=42)
+level1_model.fit(level0_train_preds, y_train_sm)
+level1_train_pred = level1_model.predict_proba(level0_train_preds)[:, 1]
+level1_test_pred  = level1_model.predict_proba(level0_test_preds)[:, 1]
+
+
+final_train_features = np.hstack([level0_train_preds, level1_train_pred.reshape(-1, 1)])
+final_test_features  = np.hstack([level0_test_preds, level1_test_pred.reshape(-1, 1)])
+
+level2_model = LogisticRegression(max_iter=1000, random_state=42)
+level2_model.fit(final_train_features, y_train_sm)
+
+y_pred_deep = level2_model.predict(final_test_features)
+y_prob_deep = level2_model.predict_proba(final_test_features)[:, 1]
+
+acc_deep = accuracy_score(y_test, y_pred_deep)
+mcc_deep = matthews_corrcoef(y_test, y_pred_deep)
+auc_deep = roc_auc_score(y_test, y_prob_deep)
+
+print(f"Accuracy : {round(acc_deep * 100, 2)}%")
+print(f"MCC      : {round(mcc_deep, 4)}")
+print(f"AUC      : {round(auc_deep, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Weighted Voting
+print("\n------Weighted Voting-----\n")
+
+weighted_ensemble = VotingClassifier(
+    estimators=[
+        ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+        ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+        ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+    ],
+    voting='soft',
+    weights=[2, 1, 2]   # RF aur LGBM ko zyada weight (best individual performers)
+)
+
+weighted_ensemble.fit(X_train_sm, y_train_sm)
+
+
+y_pred_weighted = weighted_ensemble.predict(X_test)
+y_prob_weighted = weighted_ensemble.predict_proba(X_test)[:, 1]
+
+acc_weighted = accuracy_score(y_test, y_pred_weighted)
+mcc_weighted = matthews_corrcoef(y_test, y_pred_weighted)
+auc_weighted = roc_auc_score(y_test, y_prob_weighted)
+
+print(f"Accuracy : {round(acc_weighted * 100, 2)}%")
+print(f"MCC      : {round(mcc_weighted, 4)}")
+print(f"AUC      : {round(auc_weighted, 4)}")
+
+
+
+print(f"Two-Level Stacking      : Acc={round(acc_deep*100,2)}%  MCC={round(mcc_deep,4)}  AUC={round(auc_deep,4)}")
+print(f"Weighted Voting          : Acc={round(acc_weighted*100,2)}%  MCC={round(mcc_weighted,4)}  AUC={round(auc_weighted,4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # JSON SAVE
 
 now = datetime.now()
@@ -1319,6 +1422,21 @@ new_result = {
     "Acurracy": round(acc_stack_v2 * 100, 2),
     "MCC"     : round(mcc_stack_v2, 4),
     "AUC"     : round(auc_stack_v2, 4)
+    },
+    "<----Stacking (RF+XGB+LGBM+CatBoost+SVM)---->": {
+    "Accuracy": round(acc_stack_v2 * 100, 2),
+    "MCC"     : round(mcc_stack_v2, 4),
+    "AUC"     : round(auc_stack_v2, 4)
+    },
+    "<----Two-Level Stacking (RF+XGB+LGBM+CatBoost -> LogReg -> LogReg)---->": {
+    "Accuracy": round(acc_deep * 100, 2),
+    "MCC"     : round(mcc_deep, 4),
+    "AUC"     : round(auc_deep, 4)
+    },
+    "<----Weighted Voting (RF+XGB+LGBM)---->": {
+    "Accuracy": round(acc_weighted * 100, 2),
+    "MCC"     : round(mcc_weighted, 4),
+    "AUC"     : round(auc_weighted, 4)
     }
 }
 
