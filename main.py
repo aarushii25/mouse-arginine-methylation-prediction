@@ -29,7 +29,7 @@ from sklearn.feature_selection import SelectFromModel                           
 
 # DATA LOADING
 # ASYMMETRIC
-asym_folder = r"C:\Users\HP\OneDrive\Desktop\project\Asymmetric_dimethylarginine"
+asym_folder = "Asymmetric_dimethylarginine"
 asym_neg_path = os.path.join(asym_folder, "mouse_negative_asymmetric_dimethylarginine_sequences.csv")
 asym_pos_path = os.path.join(asym_folder, "mouse_positive_asymmetric_dimethylarginine_sequences.csv")
 df_asym_neg = pd.read_csv(asym_neg_path)
@@ -38,7 +38,7 @@ df_asym_neg["label"] = 0 # NON METHYLATED
 df_asym_pos["label"] = 1 # METHYLATED
 
 # SYMMETRIC
-sym_folder = r"C:\Users\HP\OneDrive\Desktop\project\Symmetric_dimethylarginine"
+sym_folder = "Symmetric_dimethylarginine"
 sym_neg_path = os.path.join(sym_folder, "mouse_negative_symmetric_dimethylarginine_sequences.csv")
 sym_pos_path = os.path.join(sym_folder, "mouse_positive_symmetric_dimethylarginine_sequences.csv")
 df_sym_neg = pd.read_csv(sym_neg_path)
@@ -47,7 +47,7 @@ df_sym_neg["label"] = 0
 df_sym_pos["label"] = 1
 
 # DIMETHYL ARGININE
-dimethyl_folder = r"C:\Users\HP\OneDrive\Desktop\project\Dimethyl_arginine"
+dimethyl_folder = "Dimethyl_arginine"
 dimethyl_neg_path = os.path.join(dimethyl_folder, "mouse_negative_dimethylated_arginine_sequences.csv")
 dimethyl_pos_path = os.path.join(dimethyl_folder, "mouse_positive_dimethylated_arginine_sequences.csv")
 df_dimethyl_neg = pd.read_csv(dimethyl_neg_path)
@@ -56,7 +56,7 @@ df_dimethyl_neg["label"] = 0
 df_dimethyl_pos["label"] = 1
 
 # OMEGA-N-METHYLARGININE
-omega_folder = r"C:\Users\HP\OneDrive\Desktop\project\Omega-N-methylarginine"
+omega_folder = "Omega-N-methylarginine"
 omega_neg_path = os.path.join(omega_folder, "mouse_negative_omega-n-methylarginine_sequences.csv")
 omega_pos_path = os.path.join(omega_folder, "mouse_positive_omega-n-methylarginine_sequences.csv")
 df_omega_neg = pd.read_csv(omega_neg_path)
