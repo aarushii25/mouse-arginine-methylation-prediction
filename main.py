@@ -1299,22 +1299,27 @@ new_result = {
     "Accuracy": round(acc_stack * 100, 2),
     "MCC"     : round(mcc_stack, 4),
     "AUC"     : round(auc_stack, 4)
-},
-"<----Ensemble + Feature Selection---->": {
+    },
+    "<----Ensemble + Feature Selection---->": {
     "Accuracy": round(acc_ens_fs * 100, 2),
     "MCC"     : round(mcc_ens_fs, 4),
     "AUC"     : round(auc_ens_fs, 4)
-},
-"<----Logistic Regression---->": {
+    },
+    "<----Logistic Regression---->": {
     "Accuracy": round(acc_lr * 100, 2),
     "MCC"     : round(mcc_lr, 4),
     "AUC"     : round(auc_lr, 4)
-},
-"<----Stacking + ESM---->": {
+    },
+    "<----Stacking + ESM---->": {
     "Accuracy": round(acc_stack_esm * 100, 2),
     "MCC"     : round(mcc_stack_esm, 4),
     "AUC"     : round(auc_stack_esm, 4)
-}
+    },
+    "<----Stacking(RF+XGB+LGBM+CAT+SVM)": {
+    "Acurracy": round(acc_stack_v2 * 100, 2),
+    "MCC"     : round(mcc_stack_v2, 4),
+    "AUC"     : round(auc_stack_v2, 4)
+    }
 }
 
 if os.path.exists("results.json"):
