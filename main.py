@@ -268,7 +268,7 @@ def train_or_load(model, model_name, X_train, y_train):
 
 
 
-# ESM Combined + Random Forest
+# 1. ESM Combined + Random Forest
 print("\n------ESM Combined + Random Forest-----\n")
 
 if os.path.exists("X_esm.npy"):
@@ -344,7 +344,7 @@ print(f"AUC      : {round(auc_esm_c, 4)}")
 
 
 
-# ESM + SVM
+# 2. ESM + SVM
 print("\n------ESM + SVM-----\n")
 
 y_esm_svm = df["label"].values
@@ -392,7 +392,7 @@ print(f"AUC      : {round(auc_esm_svm, 4)}")
 
 
 
-# SVM
+# 3.SVM
 print("\n------SVM-----\n")
 svm_model = SVC(
     kernel='rbf',       
@@ -427,7 +427,7 @@ print(f"AUC      : {round(auc_svm, 4)}")
 
 
 
-# LIGHTGBM
+# 4.LIGHTGBM
 print("\n-------LightGBM--------\n")
 
 # 1. Initialize the model
@@ -462,7 +462,7 @@ print(f"AUC      : {round(auc_light, 4)}")
 
 
 
-# Naive Bayes
+# 5.Naive Bayes
 print("\n------Naive Bayes-----\n")
 from sklearn.naive_bayes import GaussianNB
 
@@ -491,7 +491,7 @@ print(f"AUC      : {round(auc_nb, 4)}")
 
 
 
-# KNN
+#6. KNN
 print("\n------KNN-----\n")
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -529,7 +529,7 @@ print(f"AUC      : {round(auc_knn, 4)}")
 
 
 
-#   STACKING (RF + XGB + LGBM → LogReg)
+#  7. STACKING (RF + XGB + LGBM → LogReg)
 
 print("\n------ STACKING (RF + XGB + LGBM → LogReg)-----\n")
 
@@ -583,7 +583,7 @@ print(f"AUC      : {round(auc_stack, 4)}")
 
 
 
-# Stacking with 5 Base Models
+# 8.Stacking with 5 Base Models
 print("\n------STACKING (RF + XGB + LGBM + CAT + SVM)-----\n")
 
 base_models_v2 = [
@@ -631,7 +631,7 @@ print(f"Stacking (5 models): Acc={round(acc_stack_v2*100,2)}%  MCC={round(mcc_st
 
 
 
-#   ENSEMBLE + FEATURE SELECTION
+#  9. ENSEMBLE + FEATURE SELECTION
 
 print("\n------ENSEMBLE + FEATURE SELECTION-----\n")
 
@@ -687,7 +687,7 @@ print(f"AUC      : {round(auc_ens_fs, 4)}")
 
 
 
-#   LOGISTIC REGRESSION
+#  10. LOGISTIC REGRESSION
 
 print("\n------LOGISTIC REGRESSION-----\n")
 
@@ -721,7 +721,7 @@ print(f"AUC      : {round(auc_lr, 4)}")
 
 
 
-# KNN + ESM
+# 11.KNN + ESM
 print("\n------KNN + ESM-----\n")
 
 # X_esm already load ho chuka hai
@@ -769,7 +769,7 @@ print(f"AUC      : {round(auc_esm_knn, 4)}")
 
 
 
-#CATBOOST
+#12. CATBOOST
 print("\n-------CatBoost-------")
 cat_model = CatBoostClassifier(
     iterations = 100,
@@ -804,7 +804,7 @@ print(f"AUC      : {round(auc_cat, 4)}")
 
 
 
-# XGBOOST
+#13. XGBOOST
 print("\n------XGBoost-----\n")
 xgb_model = XGBClassifier(
     n_estimators=100,
@@ -836,7 +836,7 @@ print(f"AUC      : {round(auc_xgb, 4)}")
 
 
 
-# RANDOM FOREST TRAINING
+# 14.RANDOM FOREST TRAINING
 
 print("\n------RANDOM FOREST-------\n")
 model = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -899,7 +899,7 @@ print(f"CV Std:     {cv_scores.std() * 100:.2f}%")
 
 
 
-# HYPERPARAMETER TUNING 
+# 15.HYPERPARAMETER TUNING 
 print("\n------Hyperparameter Tuning (GridSearchCV)-----\n")
 from sklearn.model_selection import GridSearchCV
 
@@ -950,7 +950,7 @@ print(f"AUC      : {round(auc_best, 4)}")
 
 
 
-# GridSearchCV + ESM
+#16. GridSearchCV + ESM
 print("\n------GridSearchCV + ESM-----\n")
 
 
@@ -1015,7 +1015,7 @@ print(f"AUC      : {round(auc_esm_grid, 4)}")
 
 
 
-#   STACKING + ESM
+# 17.  STACKING + ESM
 
 print("\n------STACKING + ESM-----\n")
 
@@ -1079,7 +1079,7 @@ print(f"AUC      : {round(auc_stack_esm, 4)}")
 
 
 
-# NEURAL NETWORK
+#18. NEURAL NETWORK
 class MethylationNN(nn.Module):
     def __init__(self):
         super(MethylationNN, self).__init__()
@@ -1161,10 +1161,11 @@ print(f"AUC      : {round(auc_nn, 4)}")
 
 
 
-# ENSEMBLE METHOD
+# 19.ENSEMBLE METHOD
 print("\n------Ensemble (RF + XGB + LGBM)-----\n")
 
-ensemble_model = VotingClassifier(
+
+ensemble_base = VotingClassifier(
     estimators=[
         ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
         ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
@@ -1173,8 +1174,8 @@ ensemble_model = VotingClassifier(
     voting='soft'   
 )
 
-model = train_or_load(
-    VotingClassifier(n_estimators=100, random_state=42),
+ensemble_model = train_or_load(
+    ensemble_base,
     "Ensemble (RF + XGB + LGBM)",
     X_train_sm, y_train_sm
 )
@@ -1201,7 +1202,7 @@ print(f"AUC      : {round(auc_ens, 4)}")
 
 
 
-# FEATURE SELECTION WITH RANDOM FOREST
+#20. FEATURE SELECTION WITH RANDOM FOREST
 print("\n------Feature Selection (Top 100)-----\n")
 
 
@@ -1251,7 +1252,7 @@ print(f"AUC      : {round(auc_fs, 4)}")
 
 
 
-# ESM2 Large (650M)
+#21. ESM2 Large (650M)
 print("\n------ESM2 Large (650M)-----\n")
 
 import esm
@@ -1326,7 +1327,7 @@ print(f"AUC      : {round(auc_esml, 4)}")
 
 
 
-# Two-Level (Deep) Stacking
+#22. Two-Level (Deep) Stacking
 
 print("\n------Two-Level Stacking-----\n")
 
@@ -1409,7 +1410,7 @@ print(f"AUC      : {round(auc_deep, 4)}")
 
 
 
-# Weighted Voting
+#23. Weighted Voting
 print("\n------Weighted Voting-----\n")
 
 weighted_ensemble = VotingClassifier(
