@@ -316,8 +316,12 @@ smote_esm_c = SMOTE(random_state=42)
 X_train_esm_c_sm, y_train_esm_c_sm = smote_esm_c.fit_resample(X_train_esm_c, y_train_esm_c)
 
 # Train
-esm_combined_model = RandomForestClassifier(n_estimators=100, random_state=42)
-esm_combined_model.fit(X_train_esm_c_sm, y_train_esm_c_sm)
+# Train
+esm_combined_model = train_or_load(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    "ESM_Combined_RF",
+    X_train_esm_c_sm, y_train_esm_c_sm
+)
 
 # Prediction
 y_pred_esm_c = esm_combined_model.predict(X_test_esm_c)
@@ -358,12 +362,12 @@ smote_esm_svm = SMOTE(random_state=42)
 X_train_esm_svm_sm, y_train_esm_svm_sm = smote_esm_svm.fit_resample(X_train_esm_svm, y_train_esm_svm)
 
 # Train
-esm_svm_model = SVC(
-    kernel='rbf',
-    random_state=42,
-    probability=True
+# Train
+esm_svm_model = train_or_load(
+    SVC(kernel='rbf', random_state=42, probability=True),
+    "ESM_SVM",
+    X_train_esm_svm_sm, y_train_esm_svm_sm
 )
-esm_svm_model.fit(X_train_esm_svm_sm, y_train_esm_svm_sm)
 
 
 # Prediction
@@ -735,11 +739,12 @@ smote_esm_knn = SMOTE(random_state=42)
 X_train_esm_knn_sm, y_train_esm_knn_sm = smote_esm_knn.fit_resample(X_train_esm_knn, y_train_esm_knn)
 
 # Train
-knn_esm_model = KNeighborsClassifier(
-    n_neighbors=5,
-    metric='euclidean'
+# Train
+knn_esm_model = train_or_load(
+    KNeighborsClassifier(n_neighbors=5, metric='euclidean'),
+    "KNN_ESM",
+    X_train_esm_knn_sm, y_train_esm_knn_sm
 )
-knn_esm_model.fit(X_train_esm_knn_sm, y_train_esm_knn_sm)
 
 # Prediction
 y_pred_esm_knn = knn_esm_model.predict(X_test_esm_knn)
@@ -1321,40 +1326,65 @@ print(f"AUC      : {round(auc_esml, 4)}")
 
 
 # Two-Level (Deep) Stacking
+
 print("\n------Two-Level Stacking-----\n")
 
 from sklearn.model_selection import cross_val_predict
 
-# Level 0 — Base models
-level0_models = [
-    ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
-    ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
-    ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
-    ('cat',  CatBoostClassifier(iterations=100, random_seed=42, verbose=0))
-]
+if os.path.exists("checkpoint_deep_level0.pkl") and \
+   os.path.exists("checkpoint_deep_level1.pkl") and \
+   os.path.exists("checkpoint_deep_level2.pkl"):
 
-level0_train_preds = np.zeros((X_train_sm.shape[0], len(level0_models)))
-level0_test_preds  = np.zeros((X_test.shape[0], len(level0_models)))
+    print("Deep Stacking checkpoints — loading...")
+    level0_models_trained = joblib.load("checkpoint_deep_level0.pkl")
+    level1_model = joblib.load("checkpoint_deep_level1.pkl")
+    level2_model = joblib.load("checkpoint_deep_level2.pkl")
 
-for i, (name, model) in enumerate(level0_models):
-    print(f"Training {name}...")
-    model.fit(X_train_sm, y_train_sm)
-    level0_train_preds[:, i] = cross_val_predict(model, X_train_sm, y_train_sm, cv=5, method='predict_proba')[:, 1]
-    level0_test_preds[:, i]  = model.predict_proba(X_test)[:, 1]
+    level0_test_preds = np.column_stack([
+        m.predict_proba(X_test)[:, 1] for m in level0_models_trained
+    ])
+    level1_test_pred = level1_model.predict_proba(level0_test_preds)[:, 1]
+    final_test_features = np.hstack([level0_test_preds, level1_test_pred.reshape(-1, 1)])
+
+else:
+    print("Training Deep Stacking from scratch...")
+
+    level0_models_list = [
+        ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+        ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+        ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+        ('cat',  CatBoostClassifier(iterations=100, random_seed=42, verbose=0))
+    ]
+
+    level0_train_preds = np.zeros((X_train_sm.shape[0], len(level0_models_list)))
+    level0_test_preds  = np.zeros((X_test.shape[0], len(level0_models_list)))
+    level0_models_trained = []
+
+    for i, (name, mdl) in enumerate(level0_models_list):
+        print(f"Training {name}...")
+        mdl.fit(X_train_sm, y_train_sm)
+        level0_models_trained.append(mdl)
+        level0_train_preds[:, i] = cross_val_predict(
+            mdl, X_train_sm, y_train_sm, cv=5, method='predict_proba')[:, 1]
+        level0_test_preds[:, i] = mdl.predict_proba(X_test)[:, 1]
+
+    level1_model = LogisticRegression(max_iter=1000, random_state=42)
+    level1_model.fit(level0_train_preds, y_train_sm)
+    level1_train_pred = level1_model.predict_proba(level0_train_preds)[:, 1]
+    level1_test_pred  = level1_model.predict_proba(level0_test_preds)[:, 1]
+
+    final_train_features = np.hstack([level0_train_preds, level1_train_pred.reshape(-1, 1)])
+    final_test_features  = np.hstack([level0_test_preds, level1_test_pred.reshape(-1, 1)])
+
+    level2_model = LogisticRegression(max_iter=1000, random_state=42)
+    level2_model.fit(final_train_features, y_train_sm)
+
+    joblib.dump(level0_models_trained, "checkpoint_deep_level0.pkl")
+    joblib.dump(level1_model, "checkpoint_deep_level1.pkl")
+    joblib.dump(level2_model, "checkpoint_deep_level2.pkl")
 
 
-level1_model = LogisticRegression(max_iter=1000, random_state=42)
-level1_model.fit(level0_train_preds, y_train_sm)
-level1_train_pred = level1_model.predict_proba(level0_train_preds)[:, 1]
-level1_test_pred  = level1_model.predict_proba(level0_test_preds)[:, 1]
-
-
-final_train_features = np.hstack([level0_train_preds, level1_train_pred.reshape(-1, 1)])
-final_test_features  = np.hstack([level0_test_preds, level1_test_pred.reshape(-1, 1)])
-
-level2_model = LogisticRegression(max_iter=1000, random_state=42)
-level2_model.fit(final_train_features, y_train_sm)
-
+# Prediction
 y_pred_deep = level2_model.predict(final_test_features)
 y_prob_deep = level2_model.predict_proba(final_test_features)[:, 1]
 
@@ -1365,9 +1395,6 @@ auc_deep = roc_auc_score(y_test, y_prob_deep)
 print(f"Accuracy : {round(acc_deep * 100, 2)}%")
 print(f"MCC      : {round(mcc_deep, 4)}")
 print(f"AUC      : {round(auc_deep, 4)}")
-
-
-
 
 
 
