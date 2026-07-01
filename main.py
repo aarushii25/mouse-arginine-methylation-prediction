@@ -1586,6 +1586,84 @@ print(f"Weighted Voting          : Acc={round(acc_weighted*100,2)}%  MCC={round(
 
 
 
+
+# 24. HYBRID FEATURES + DEEP MULTI-LEVEL STACKING
+
+print("\n------ HYBRID FEATURES + DEEP STACKING -----\n")
+
+# STEP 1: Create the Hybrid Feature Matrix
+# Concatenating Handcrafted (AAC, DPC, Entropy, Phys) + Deep (ESM)
+X_hybrid = np.hstack([X_aac, X_dpc, X_entropy, X_phys, X_esm])
+y_hybrid = df["label"].values
+
+print(f"Hybrid Feature Matrix Shape: {X_hybrid.shape}") # Should be 754 columns
+
+# STEP 2: Train/Test Split
+X_train_hyb, X_test_hyb, y_train_hyb, y_test_hyb = train_test_split(
+    X_hybrid, y_hybrid,
+    test_size=0.2,
+    random_state=42,
+    stratify=y_hybrid
+)
+
+# STEP 3: Handle Imbalance with SMOTE
+smote_hyb = SMOTE(random_state=42)
+X_train_hyb_sm, y_train_hyb_sm = smote_hyb.fit_resample(X_train_hyb, y_train_hyb)
+
+# STEP 4: Define Deep Stacking Architecture
+
+base_models_deep = [
+    ('rf',    RandomForestClassifier(n_estimators=200, max_depth=20, random_state=42, n_jobs=-1)),
+    ('xgb',   XGBClassifier(n_estimators=200, learning_rate=0.05, random_state=42, eval_metric='logloss', n_jobs=-1)),
+    ('lgbm',  LGBMClassifier(n_estimators=200, learning_rate=0.05, random_state=42, verbose=-1, n_jobs=-1)),
+    ('cat',   CatBoostClassifier(iterations=200, learning_rate=0.05, random_seed=42, verbose=0))
+]
+
+meta_learner = RandomForestClassifier(
+    n_estimators=100, 
+    max_depth=10,       
+    random_state=42,
+    n_jobs=-1
+)
+
+deep_hybrid_stack = StackingClassifier(
+    estimators=base_models_deep,
+    final_estimator=meta_learner,
+    cv=5,
+    n_jobs=-1 
+)
+
+# STEP 5: Train & Evaluate
+deep_hybrid_stack = train_or_load(
+    deep_hybrid_stack,
+    "Deep_Hybrid_Stacking",
+    X_train_hyb_sm, y_train_hyb_sm
+)
+
+# Predictions
+y_pred_hyb = deep_hybrid_stack.predict(X_test_hyb)
+y_prob_hyb = deep_hybrid_stack.predict_proba(X_test_hyb)[:, 1]
+
+# Metrics
+acc_hyb = accuracy_score(y_test_hyb, y_pred_hyb)
+mcc_hyb = matthews_corrcoef(y_test_hyb, y_pred_hyb)
+auc_hyb = roc_auc_score(y_test_hyb, y_prob_hyb)
+
+print(f"\nFINAL HYBRID DEEP STACKING RESULTS:")
+print(f"Accuracy : {round(acc_hyb * 100, 2)}%")
+print(f"MCC      : {round(mcc_hyb, 4)}")
+print(f"AUC      : {round(auc_hyb, 4)}")
+
+
+
+
+
+
+
+
+
+
+
 # JSON SAVE
 
 now = datetime.now()
@@ -1694,11 +1772,6 @@ new_result = {
     "MCC"     : round(mcc_stack_v2, 4),
     "AUC"     : round(auc_stack_v2, 4)
     },
-    "<----Stacking (RF+XGB+LGBM+CatBoost+SVM)---->": {
-    "Accuracy": round(acc_stack_v2 * 100, 2),
-    "MCC"     : round(mcc_stack_v2, 4),
-    "AUC"     : round(auc_stack_v2, 4)
-    },
     "<----Two-Level Stacking (RF+XGB+LGBM+CatBoost -> LogReg -> LogReg)---->": {
     "Accuracy": round(acc_deep * 100, 2),
     "MCC"     : round(mcc_deep, 4),
@@ -1708,6 +1781,11 @@ new_result = {
     "Accuracy": round(acc_weighted * 100, 2),
     "MCC"     : round(mcc_weighted, 4),
     "AUC"     : round(auc_weighted, 4)
+    },
+    "<----Hybrid Deep Stacking (ESM + Handcrafted)---->": {
+        "Accuracy": round(acc_hyb * 100, 2),
+        "MCC"     : round(mcc_hyb, 4),
+        "AUC"     : round(auc_hyb, 4)
     }
 }
 
