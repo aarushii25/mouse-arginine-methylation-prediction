@@ -401,7 +401,7 @@ svm_model = SVC(
 )
 
 svm_model = train_or_load(
-    SVC(n_estimators=100, random_state=42, probability=True),
+    SVC( random_state=42, probability=True),
     "SVM",
     X_train_sm, y_train_sm
 )
@@ -443,6 +443,7 @@ model = train_or_load(
 
 # Pediction 
 y_pred_light = light_model.predict(X_test)
+light_model.fit(X_train, y_train)
 y_prob_light = light_model.predict_proba(X_test)[:,1]
 
 # Evaluation
