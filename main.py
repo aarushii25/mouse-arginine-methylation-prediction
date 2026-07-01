@@ -392,16 +392,38 @@ print(f"AUC      : {round(auc_esm_svm, 4)}")
 
 
 
-# 3.SVM
+# # 3.SVM
+# print("\n------SVM-----\n")
+# svm_model = SVC(
+#     kernel='rbf',       
+#     random_state=42,
+#     probability=True     
+# )
+
+# svm_model = train_or_load(
+#     SVC( random_state=42, probability=True),
+#     "SVM",
+#     X_train_sm, y_train_sm
+# )
+
+# # Prediction
+# y_pred_svm = svm_model.predict(X_test)
+# y_prob_svm = svm_model.predict_proba(X_test)[:, 1]
+
+# # Evaluation
+# acc_svm = accuracy_score(y_test, y_pred_svm)
+# mcc_svm = matthews_corrcoef(y_test, y_pred_svm)
+# auc_svm = roc_auc_score(y_test, y_prob_svm)
+
+# # Printing
+# print(f"Accuracy : {round(acc_svm * 100, 2)}%")
+# print(f"MCC      : {round(mcc_svm, 4)}")
+# print(f"AUC      : {round(auc_svm, 4)}")
+# 3. SVM
 print("\n------SVM-----\n")
-svm_model = SVC(
-    kernel='rbf',       
-    random_state=42,
-    probability=True     
-)
 
 svm_model = train_or_load(
-    SVC( random_state=42, probability=True),
+    SVC(kernel='rbf', random_state=42, probability=True),
     "SVM",
     X_train_sm, y_train_sm
 )
@@ -410,55 +432,60 @@ svm_model = train_or_load(
 y_pred_svm = svm_model.predict(X_test)
 y_prob_svm = svm_model.predict_proba(X_test)[:, 1]
 
-# Evaluation
-acc_svm = accuracy_score(y_test, y_pred_svm)
-mcc_svm = matthews_corrcoef(y_test, y_pred_svm)
-auc_svm = roc_auc_score(y_test, y_prob_svm)
-
-# Printing
-print(f"Accuracy : {round(acc_svm * 100, 2)}%")
-print(f"MCC      : {round(mcc_svm, 4)}")
-print(f"AUC      : {round(auc_svm, 4)}")
 
 
 
 
 
 
+# # 4.LIGHTGBM
+# print("\n-------LightGBM--------\n")
+
+# # 1. Initialize the model
+# light_model = LGBMClassifier(
+#     n_estimators=100,
+#     random_state=42,
+#     verbose=-1
+# )
+
+# # 2. FIT THE MODEL FIRST (Training)
+
+# light_model.fit(X_train, y_train)
 
 
-# 4.LIGHTGBM
+# # 3. PREDICT (Testing)
+# y_pred_light = light_model.predict(X_test)
+# y_prob_light = light_model.predict_proba(X_test)[:, 1]
+
+# # 4. Evaluation
+# acc_light = accuracy_score(y_test, y_pred_light)
+# mcc_light = matthews_corrcoef(y_test, y_pred_light)
+# auc_light = roc_auc_score(y_test, y_prob_light)
+
+# # 5. Printing Results
+# print(f"Accuracy : {round(acc_light * 100, 2)}%")
+# print(f"MCC      : {round(mcc_light, 4)}")
+# print(f"AUC      : {round(auc_light, 4)}")
+
+
+
+# 4. LIGHTGBM
 print("\n-------LightGBM--------\n")
 
-# 1. Initialize the model
-light_model = LGBMClassifier(
-    n_estimators=100,
-    random_state=42,
-    verbose=-1
+light_model = train_or_load(
+    LGBMClassifier(n_estimators=100, random_state=42, verbose=-1),
+    "LightGBM",
+    X_train_sm, y_train_sm # Changed to SMOTE data for consistency, or X_train if intended
 )
 
-# 2. FIT THE MODEL FIRST (Training)
-
-light_model.fit(X_train, y_train)
-
-
-# 3. PREDICT (Testing)
+# PREDICT (Testing)
 y_pred_light = light_model.predict(X_test)
 y_prob_light = light_model.predict_proba(X_test)[:, 1]
 
-# 4. Evaluation
+# Evaluation
 acc_light = accuracy_score(y_test, y_pred_light)
 mcc_light = matthews_corrcoef(y_test, y_pred_light)
 auc_light = roc_auc_score(y_test, y_prob_light)
-
-# 5. Printing Results
-print(f"Accuracy : {round(acc_light * 100, 2)}%")
-print(f"MCC      : {round(mcc_light, 4)}")
-print(f"AUC      : {round(auc_light, 4)}")
-
-
-
-
 
 
 
@@ -583,41 +610,62 @@ print(f"AUC      : {round(auc_stack, 4)}")
 
 
 
-# 8.Stacking with 5 Base Models
+# # 8.Stacking with 5 Base Models
+# print("\n------STACKING (RF + XGB + LGBM + CAT + SVM)-----\n")
+
+# base_models_v2 = [
+#     ('rf',    RandomForestClassifier(n_estimators=100, random_state=42)),
+#     ('xgb',   XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+#     ('lgbm',  LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+#     ('cat',   CatBoostClassifier(iterations=100, random_seed=42, verbose=0)),
+#     ('svm',   SVC(kernel='rbf', random_state=42, probability=True))
+# ]
+
+# stacking_model_v2 = StackingClassifier(
+#     estimators=base_models_v2,
+#     final_estimator=LogisticRegression(max_iter=1000),
+#     cv=5
+# )
+
+# stacking_model_v2.fit(X_train_sm, y_train_sm)
+
+# # Prediction
+# y_pred_stack_v2 = stacking_model_v2.predict(X_test)
+# y_prob_stack_v2 = stacking_model_v2.predict_proba(X_test)[:, 1]
+
+# # Evaluation
+# acc_stack_v2 = accuracy_score(y_test, y_pred_stack_v2)
+# mcc_stack_v2 = matthews_corrcoef(y_test, y_pred_stack_v2)
+# auc_stack_v2 = roc_auc_score(y_test, y_prob_stack_v2)
+
+# print(f"Accuracy : {round(acc_stack_v2 * 100, 2)}%")
+# print(f"MCC      : {round(mcc_stack_v2, 4)}")
+# print(f"AUC      : {round(auc_stack_v2, 4)}")
+
+# print(f"Stacking (5 models): Acc={round(acc_stack_v2*100,2)}%  MCC={round(mcc_stack_v2,4)}  AUC={round(auc_stack_v2,4)}")
+
+# 8. Stacking with 5 Base Models
 print("\n------STACKING (RF + XGB + LGBM + CAT + SVM)-----\n")
 
-base_models_v2 = [
-    ('rf',    RandomForestClassifier(n_estimators=100, random_state=42)),
-    ('xgb',   XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
-    ('lgbm',  LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
-    ('cat',   CatBoostClassifier(iterations=100, random_seed=42, verbose=0)),
-    ('svm',   SVC(kernel='rbf', random_state=42, probability=True))
-]
-
-stacking_model_v2 = StackingClassifier(
-    estimators=base_models_v2,
-    final_estimator=LogisticRegression(max_iter=1000),
-    cv=5
+stacking_model_v2 = train_or_load(
+    StackingClassifier(
+        estimators=[
+            ('rf',    RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb',   XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm',  LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+            ('cat',   CatBoostClassifier(iterations=100, random_seed=42, verbose=0)),
+            ('svm',   SVC(kernel='rbf', random_state=42, probability=True))
+        ],
+        final_estimator=LogisticRegression(max_iter=1000),
+        cv=5
+    ),
+    "Stacking_5_Models",
+    X_train_sm, y_train_sm
 )
-
-stacking_model_v2.fit(X_train_sm, y_train_sm)
 
 # Prediction
 y_pred_stack_v2 = stacking_model_v2.predict(X_test)
 y_prob_stack_v2 = stacking_model_v2.predict_proba(X_test)[:, 1]
-
-# Evaluation
-acc_stack_v2 = accuracy_score(y_test, y_pred_stack_v2)
-mcc_stack_v2 = matthews_corrcoef(y_test, y_pred_stack_v2)
-auc_stack_v2 = roc_auc_score(y_test, y_prob_stack_v2)
-
-print(f"Accuracy : {round(acc_stack_v2 * 100, 2)}%")
-print(f"MCC      : {round(mcc_stack_v2, 4)}")
-print(f"AUC      : {round(auc_stack_v2, 4)}")
-
-print(f"Stacking (5 models): Acc={round(acc_stack_v2*100,2)}%  MCC={round(mcc_stack_v2,4)}  AUC={round(auc_stack_v2,4)}")
-
-
 
 
 
@@ -769,34 +817,46 @@ print(f"AUC      : {round(auc_esm_knn, 4)}")
 
 
 
-#12. CATBOOST
+# #12. CATBOOST
+# print("\n-------CatBoost-------")
+# cat_model = CatBoostClassifier(
+#     iterations = 100,
+#     random_seed = 42,
+#     verbose = 0                          # it won't let the training data print
+# )
+
+
+# cat_model = train_or_load(
+#     CatBoostClassifier(n_estimators=100, random_state=42,verbose=0),
+#     "CatBoost",
+#     X_train_sm, y_train_sm
+# )
+# # Prediction
+# y_pred_cat = cat_model.predict(X_test)
+# y_prob_cat = cat_model.predict_proba(X_test)[:,1]
+
+# # Evaluation
+# acc_cat = accuracy_score(y_test, y_pred_cat)
+# mcc_cat = matthews_corrcoef(y_test, y_pred_cat)
+# auc_cat = roc_auc_score(y_test, y_prob_cat)
+
+# # Printing
+# print(f"Accuracy : {round(acc_cat * 100, 2)}%")
+# print(f"MCC      : {round(mcc_cat, 4)}")
+# print(f"AUC      : {round(auc_cat, 4)}")
+# 12. CATBOOST
 print("\n-------CatBoost-------")
-cat_model = CatBoostClassifier(
-    iterations = 100,
-    random_seed = 42,
-    verbose = 0                          # it won't let the training data print
-)
 
-
+# Fixed: Use 'iterations' instead of 'n_estimators'
 cat_model = train_or_load(
-    CatBoostClassifier(n_estimators=100, random_state=42,verbose=0),
+    CatBoostClassifier(iterations=100, random_seed=42, verbose=0),
     "CatBoost",
     X_train_sm, y_train_sm
 )
+
 # Prediction
 y_pred_cat = cat_model.predict(X_test)
 y_prob_cat = cat_model.predict_proba(X_test)[:,1]
-
-# Evaluation
-acc_cat = accuracy_score(y_test, y_pred_cat)
-mcc_cat = matthews_corrcoef(y_test, y_pred_cat)
-auc_cat = roc_auc_score(y_test, y_prob_cat)
-
-# Printing
-print(f"Accuracy : {round(acc_cat * 100, 2)}%")
-print(f"MCC      : {round(mcc_cat, 4)}")
-print(f"AUC      : {round(auc_cat, 4)}")
-
 
 
 
@@ -1202,47 +1262,68 @@ print(f"AUC      : {round(auc_ens, 4)}")
 
 
 
-#20. FEATURE SELECTION WITH RANDOM FOREST
-print("\n------Feature Selection (Top 100)-----\n")
+# #20. FEATURE SELECTION WITH RANDOM FOREST
+# print("\n------Feature Selection (Top 100)-----\n")
 
+
+# selector = SelectFromModel(
+#     RandomForestClassifier(n_estimators=100, random_state=42),
+#     max_features=100    # top 100 features
+# )
+
+# selector.fit(X_train_sm, y_train_sm)
+
+# # Top 100 features select karo
+# X_train_fs = selector.transform(X_train_sm)
+# X_test_fs  = selector.transform(X_test)
+
+# print(f"Before Feature Selection: {X_train_sm.shape[1]} features")
+# print(f"After Feature Selection:  {X_train_fs.shape[1]} features")
+
+
+# fs_model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# model = train_or_load(
+#     SelectFromModel(n_estimators=100, random_state=42),
+#     "Feature Selection With Random Forest",
+#     X_train_fs, y_train_sm
+# )
+
+# # Prediction
+# y_pred_fs = fs_model.predict(X_test_fs)
+# y_prob_fs = fs_model.predict_proba(X_test_fs)[:, 1]
+
+# # Evaluation
+# acc_fs = accuracy_score(y_test, y_pred_fs)
+# mcc_fs = matthews_corrcoef(y_test, y_pred_fs)
+# auc_fs = roc_auc_score(y_test, y_prob_fs)
+
+# print(f"Accuracy : {round(acc_fs * 100, 2)}%")
+# print(f"MCC      : {round(mcc_fs, 4)}")
+# print(f"AUC      : {round(auc_fs, 4)}")
+
+# 20. FEATURE SELECTION WITH RANDOM FOREST
+print("\n------Feature Selection (Top 100)-----\n")
 
 selector = SelectFromModel(
     RandomForestClassifier(n_estimators=100, random_state=42),
-    max_features=100    # top 100 features
+    max_features=100
 )
-
 selector.fit(X_train_sm, y_train_sm)
 
-# Top 100 features select karo
 X_train_fs = selector.transform(X_train_sm)
 X_test_fs  = selector.transform(X_test)
 
-print(f"Before Feature Selection: {X_train_sm.shape[1]} features")
-print(f"After Feature Selection:  {X_train_fs.shape[1]} features")
-
-
-fs_model = RandomForestClassifier(n_estimators=100, random_state=42)
-
-model = train_or_load(
-    SelectFromModel(n_estimators=100, random_state=42),
-    "Feature Selection With Random Forest",
+# Fixed: Pass RandomForestClassifier to train_or_load, not SelectFromModel
+fs_model = train_or_load(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    "Feature_Selection_RF",
     X_train_fs, y_train_sm
 )
 
 # Prediction
 y_pred_fs = fs_model.predict(X_test_fs)
 y_prob_fs = fs_model.predict_proba(X_test_fs)[:, 1]
-
-# Evaluation
-acc_fs = accuracy_score(y_test, y_pred_fs)
-mcc_fs = matthews_corrcoef(y_test, y_pred_fs)
-auc_fs = roc_auc_score(y_test, y_prob_fs)
-
-print(f"Accuracy : {round(acc_fs * 100, 2)}%")
-print(f"MCC      : {round(mcc_fs, 4)}")
-print(f"AUC      : {round(auc_fs, 4)}")
-
-
 
 
 
