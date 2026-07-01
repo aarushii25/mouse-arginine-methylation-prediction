@@ -30,6 +30,7 @@ from sklearn.feature_selection import SelectFromModel                           
 from sklearn.ensemble import StackingClassifier, VotingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
+import joblib                                                                                       # for checkpoint
 
 # DATA LOADING
 # ASYMMETRIC
@@ -233,6 +234,34 @@ print("After SMOTE :", y_train_sm.sum(), "methylated vs", len(y_train_sm) - y_tr
 
 
 
+
+
+
+
+
+def train_or_load(model, model_name, X_train, y_train):
+    checkpoint_path = f"checkpoint_{model_name}.pkl"
+    
+    if os.path.exists(checkpoint_path):
+        print(f"Checkpoint — {model_name} loading...")
+        loaded_model = joblib.load(checkpoint_path)
+        return loaded_model
+    else:
+        print(f"Training {model_name} from scratch...")
+        model.fit(X_train, y_train)
+        joblib.dump(model, checkpoint_path)
+        print(f"{model_name} trained and saved!")
+        return model
+
+
+
+
+
+
+
+
+
+
 # ALL THE MACHINE LEARNING MODEL
 
 
@@ -366,7 +395,12 @@ svm_model = SVC(
     random_state=42,
     probability=True     
 )
-svm_model.fit(X_train_sm, y_train_sm)
+
+svm_model = train_or_load(
+    SVC(n_estimators=100, random_state=42, probability=True),
+    "SVM",
+    X_train_sm, y_train_sm
+)
 
 # Prediction
 y_pred_svm = svm_model.predict(X_test)
@@ -397,7 +431,11 @@ light_model = LGBMClassifier(
     verbose = -1
 )
 
-light_model.fit(X_train_sm, y_train_sm)
+model = train_or_load(
+    LGBMClassifier(n_estimators=100, random_state=42),
+    "LightGBM",
+    X_train_sm, y_train_sm
+)
 
 # Pediction 
 y_pred_light = light_model.predict(X_test)
@@ -424,8 +462,12 @@ print("\n------Naive Bayes-----\n")
 from sklearn.naive_bayes import GaussianNB
 
 nb_model = GaussianNB()
-nb_model.fit(X_train_sm, y_train_sm)
 
+nb_model = train_or_load(
+    GaussianNB(),
+    "Naive Bayes",
+    X_train_sm, y_train_sm
+)
 # Prediction
 y_pred_nb = nb_model.predict(X_test)
 y_prob_nb = nb_model.predict_proba(X_test)[:, 1]
@@ -452,8 +494,11 @@ knn_model = KNeighborsClassifier(
     n_neighbors=5,    # 5 nearest neighbors
     metric='euclidean'
 )
-knn_model.fit(X_train_sm, y_train_sm)
-
+knn_model = train_or_load(
+    KNeighborsClassifier(n_estimators=100, metric='euclidean'),
+    "KNN",
+    X_train_sm, y_train_sm
+)
 # Prediction
 y_pred_knn = knn_model.predict(X_test)
 y_prob_knn = knn_model.predict_proba(X_test)[:, 1]
@@ -494,7 +539,20 @@ stacking_model = StackingClassifier(
     final_estimator=LogisticRegression(max_iter=1000),
     cv=5
 )
-stacking_model.fit(X_train_sm, y_train_sm)
+
+stacking_model = train_or_load(
+    StackingClassifier(
+        estimators=[
+            ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+        ],
+        final_estimator=LogisticRegression(max_iter=1000),
+        cv=5
+    ),
+    "Stacking",
+    X_train_sm, y_train_sm
+)
 
 y_pred_stack = stacking_model.predict(X_test)
 y_prob_stack = stacking_model.predict_proba(X_test)[:, 1]
@@ -588,8 +646,28 @@ ensemble_fs_model = VotingClassifier(
     ],
     voting='soft'
 )
-ensemble_fs_model.fit(X_train_fs, y_train_sm)
 
+
+selector = SelectFromModel(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    max_features=100
+)
+selector.fit(X_train_sm, y_train_sm)
+X_train_fs = selector.transform(X_train_sm)
+X_test_fs  = selector.transform(X_test)
+
+ensemble_fs_model = train_or_load(
+    VotingClassifier(
+        estimators=[
+            ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+        ],
+        voting='soft'
+    ),
+    "Ensemble_FS",
+    X_train_fs, y_train_sm
+)
 
 y_pred_ens_fs = ensemble_fs_model.predict(X_test_fs)
 y_prob_ens_fs = ensemble_fs_model.predict_proba(X_test_fs)[:, 1]
@@ -609,8 +687,12 @@ print(f"AUC      : {round(auc_ens_fs, 4)}")
 print("\n------LOGISTIC REGRESSION-----\n")
 
 lr_model = LogisticRegression(max_iter=1000, random_state=42)
-lr_model.fit(X_train_sm, y_train_sm)
 
+lr_model = train_or_load(
+    LogisticRegression(max_iter=1000, random_state=42),
+    "LOGISTIC REGRESSION",
+    X_train_sm, y_train_sm
+)
 
 y_pred_lr = lr_model.predict(X_test)
 y_prob_lr = lr_model.predict_proba(X_test)[:, 1]
@@ -689,8 +771,12 @@ cat_model = CatBoostClassifier(
     verbose = 0                          # it won't let the training data print
 )
 
-cat_model.fit(X_train_sm, y_train_sm)
 
+cat_model = train_or_load(
+    CatBoostClassifier(n_estimators=100, random_state=42,verbose=0),
+    "CatBoost",
+    X_train_sm, y_train_sm
+)
 # Prediction
 y_pred_cat = cat_model.predict(X_test)
 y_prob_cat = cat_model.predict_proba(X_test)[:,1]
@@ -719,7 +805,11 @@ xgb_model = XGBClassifier(
     random_state=42,
     eval_metric="logloss"
 )
-xgb_model.fit(X_train_sm, y_train_sm)
+xgb_model = train_or_load(
+    XGBClassifier(n_estimators=100, random_state=42, eval_metric="logloss"),
+    "xgboost",
+    X_train_sm, y_train_sm
+)
 
 # Prediction
 y_pred_xgb = xgb_model.predict(X_test)
@@ -740,15 +830,16 @@ print(f"AUC      : {round(auc_xgb, 4)}")
 
 
 
-
-
-
 # RANDOM FOREST TRAINING
 
 print("\n------RANDOM FOREST-------\n")
 model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train_sm, y_train_sm)
 
+model = train_or_load(
+    RandomForestClassifier(n_estimators=100, random_state=42),
+    "random_forest",
+    X_train_sm, y_train_sm
+)
 # PREDICTION
 
 y_pred = model.predict(X_test)
@@ -946,7 +1037,21 @@ stacking_esm_model = StackingClassifier(
     final_estimator=LogisticRegression(max_iter=1000),
     cv=5
 )
-stacking_esm_model.fit(X_train_es_sm, y_train_es_sm)
+
+
+stacking_esm_model = train_or_load(
+    StackingClassifier(
+        estimators=[
+            ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1))
+        ],
+        final_estimator=LogisticRegression(max_iter=1000),
+        cv=5
+    ),
+    "Stacking_ESM",
+    X_train_es_sm, y_train_es_sm
+)
 
 
 y_pred_stack_esm = stacking_esm_model.predict(X_test_es)
@@ -1062,8 +1167,11 @@ ensemble_model = VotingClassifier(
     voting='soft'   
 )
 
-ensemble_model.fit(X_train_sm, y_train_sm)
-
+model = train_or_load(
+    VotingClassifier(n_estimators=100, random_state=42),
+    "Ensemble (RF + XGB + LGBM)",
+    X_train_sm, y_train_sm
+)
 
 # Prediction
 y_pred_ens = ensemble_model.predict(X_test)
@@ -1107,8 +1215,12 @@ print(f"After Feature Selection:  {X_train_fs.shape[1]} features")
 
 
 fs_model = RandomForestClassifier(n_estimators=100, random_state=42)
-fs_model.fit(X_train_fs, y_train_sm)
 
+model = train_or_load(
+    SelectFromModel(n_estimators=100, random_state=42),
+    "Feature Selection With Random Forest",
+    X_train_fs, y_train_sm
+)
 
 # Prediction
 y_pred_fs = fs_model.predict(X_test_fs)
