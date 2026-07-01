@@ -429,29 +429,29 @@ print(f"AUC      : {round(auc_svm, 4)}")
 
 # LIGHTGBM
 print("\n-------LightGBM--------\n")
+
+# 1. Initialize the model
 light_model = LGBMClassifier(
-    n_estimators = 100,
-    random_state = 42,
-    verbose = -1
+    n_estimators=100,
+    random_state=42,
+    verbose=-1
 )
 
-model = train_or_load(
-    LGBMClassifier(n_estimators=100, random_state=42),
-    "LightGBM",
-    X_train_sm, y_train_sm
-)
+# 2. FIT THE MODEL FIRST (Training)
 
-# Pediction 
-y_pred_light = light_model.predict(X_test)
 light_model.fit(X_train, y_train)
-y_prob_light = light_model.predict_proba(X_test)[:,1]
 
-# Evaluation
+
+# 3. PREDICT (Testing)
+y_pred_light = light_model.predict(X_test)
+y_prob_light = light_model.predict_proba(X_test)[:, 1]
+
+# 4. Evaluation
 acc_light = accuracy_score(y_test, y_pred_light)
 mcc_light = matthews_corrcoef(y_test, y_pred_light)
-auc_light = roc_auc_score(y_test , y_prob_light)
+auc_light = roc_auc_score(y_test, y_prob_light)
 
-# Printing
+# 5. Printing Results
 print(f"Accuracy : {round(acc_light * 100, 2)}%")
 print(f"MCC      : {round(mcc_light, 4)}")
 print(f"AUC      : {round(auc_light, 4)}")
