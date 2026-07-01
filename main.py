@@ -432,6 +432,20 @@ svm_model = train_or_load(
 y_pred_svm = svm_model.predict(X_test)
 y_prob_svm = svm_model.predict_proba(X_test)[:, 1]
 
+# Evaluation
+acc_svm = accuracy_score(y_test, y_pred_svm)
+mcc_svm = matthews_corrcoef(y_test, y_pred_svm)
+auc_svm = roc_auc_score(y_test, y_prob_svm)
+
+# Printing
+print(f"Accuracy : {round(acc_svm * 100, 2)}%")
+print(f"MCC      : {round(mcc_svm, 4)}")
+print(f"AUC      : {round(auc_svm, 4)}")
+
+
+
+
+
 
 
 
@@ -486,6 +500,14 @@ y_prob_light = light_model.predict_proba(X_test)[:, 1]
 acc_light = accuracy_score(y_test, y_pred_light)
 mcc_light = matthews_corrcoef(y_test, y_pred_light)
 auc_light = roc_auc_score(y_test, y_prob_light)
+# 5. Printing Results
+print(f"Accuracy : {round(acc_light * 100, 2)}%")
+print(f"MCC      : {round(mcc_light, 4)}")
+print(f"AUC      : {round(auc_light, 4)}")
+
+
+
+
 
 
 
@@ -667,7 +689,14 @@ stacking_model_v2 = train_or_load(
 y_pred_stack_v2 = stacking_model_v2.predict(X_test)
 y_prob_stack_v2 = stacking_model_v2.predict_proba(X_test)[:, 1]
 
+# Evaluation
+acc_stack_v2 = accuracy_score(y_test, y_pred_stack_v2)
+mcc_stack_v2 = matthews_corrcoef(y_test, y_pred_stack_v2)
+auc_stack_v2 = roc_auc_score(y_test, y_prob_stack_v2)
 
+print(f"Accuracy : {round(acc_stack_v2 * 100, 2)}%")
+print(f"MCC      : {round(mcc_stack_v2, 4)}")
+print(f"AUC      : {round(auc_stack_v2, 4)}")
 
 
 
@@ -772,7 +801,7 @@ print(f"AUC      : {round(auc_lr, 4)}")
 # 11.KNN + ESM
 print("\n------KNN + ESM-----\n")
 
-# X_esm already load ho chuka hai
+
 y_esm_knn = df["label"].values
 
 # Train Test Split
@@ -845,9 +874,11 @@ print(f"AUC      : {round(auc_esm_knn, 4)}")
 # print(f"MCC      : {round(mcc_cat, 4)}")
 # print(f"AUC      : {round(auc_cat, 4)}")
 # 12. CATBOOST
+
+
+# 12. CATBOOST
 print("\n-------CatBoost-------")
 
-# Fixed: Use 'iterations' instead of 'n_estimators'
 cat_model = train_or_load(
     CatBoostClassifier(iterations=100, random_seed=42, verbose=0),
     "CatBoost",
@@ -857,6 +888,16 @@ cat_model = train_or_load(
 # Prediction
 y_pred_cat = cat_model.predict(X_test)
 y_prob_cat = cat_model.predict_proba(X_test)[:,1]
+
+# --- THE MISSING EVALUATION LINES ---
+acc_cat = accuracy_score(y_test, y_pred_cat)
+mcc_cat = matthews_corrcoef(y_test, y_pred_cat)
+auc_cat = roc_auc_score(y_test, y_prob_cat)
+
+# Printing
+print(f"Accuracy : {round(acc_cat * 100, 2)}%")
+print(f"MCC      : {round(mcc_cat, 4)}")
+print(f"AUC      : {round(auc_cat, 4)}")
 
 
 
@@ -1325,6 +1366,14 @@ fs_model = train_or_load(
 y_pred_fs = fs_model.predict(X_test_fs)
 y_prob_fs = fs_model.predict_proba(X_test_fs)[:, 1]
 
+# Evaluation
+acc_fs = accuracy_score(y_test, y_pred_fs)
+mcc_fs = matthews_corrcoef(y_test, y_pred_fs)
+auc_fs = roc_auc_score(y_test, y_prob_fs)
+
+print(f"Accuracy : {round(acc_fs * 100, 2)}%")
+print(f"MCC      : {round(mcc_fs, 4)}")
+print(f"AUC      : {round(auc_fs, 4)}")
 
 
 
