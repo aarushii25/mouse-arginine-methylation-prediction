@@ -500,7 +500,7 @@ knn_model = KNeighborsClassifier(
     metric='euclidean'
 )
 knn_model = train_or_load(
-    KNeighborsClassifier(n_estimators=100, metric='euclidean'),
+    KNeighborsClassifier(n_estimators=5, metric='euclidean'),
     "KNN",
     X_train_sm, y_train_sm
 )
