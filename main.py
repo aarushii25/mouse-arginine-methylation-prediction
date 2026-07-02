@@ -2004,6 +2004,77 @@ print(f"AUC      : {round(auc_deep_seq, 4)}")
 
 
 
+# 26. TABNET (Google's Architecture for Tabular Data)
+
+print("\n------ TabNet Classifier -----\n")
+
+import torch
+import numpy as np
+from pytorch_tabnet.tab_model import TabNetClassifier
+from sklearn.metrics import accuracy_score, matthews_corrcoef, roc_auc_score
+
+# --- A. DATA PREPARATION FOR TABNET ---
+
+X_train_tab = X_train_sm.astype(np.float32)
+y_train_tab = y_train_sm.astype(np.int64)
+X_test_tab  = X_test.astype(np.float32)
+y_test_tab  = y_test.astype(np.int64)
+
+# --- B. DEFINE TABNET ARCHITECTURE ---
+tabnet_model = TabNetClassifier(
+    n_d=64, n_a=64, n_steps=5,          
+    gamma=1.5, n_independent=2, n_shared=2,
+    lambda_sparse=1e-4,                  
+    optimizer_fn=torch.optim.Adam,
+    optimizer_params=dict(lr=2e-2, weight_decay=1e-5),
+    mask_type='entmax',                     
+    scheduler_params={"step_size": 10, "gamma": 0.9},
+    scheduler_fn=torch.optim.lr_scheduler.StepLR,
+    verbose=1
+)
+
+# --- C. TRAIN THE MODEL ---
+print("Training TabNet (Watch the early stopping metrics)...")
+tabnet_model.fit(
+    X_train=X_train_tab, y_train=y_train_tab,
+    eval_set=[(X_train_tab, y_train_tab), (X_test_tab, y_test_tab)],
+    eval_name=['train', 'valid'],
+    eval_metric=['auc', 'accuracy'],
+    max_epochs=150, 
+    patience=20,                             # Stops training early if validation stops improving
+    batch_size=256, 
+    virtual_batch_size=128,
+    num_workers=0,
+    drop_last=False
+)
+
+# --- D. EVALUATE THE MODEL ---
+# Predict classes and probabilities
+y_pred_tab = tabnet_model.predict(X_test_tab)
+y_prob_tab = tabnet_model.predict_proba(X_test_tab)[:, 1]
+
+# Calculate metrics
+acc_tab = accuracy_score(y_test_tab, y_pred_tab)
+mcc_tab = matthews_corrcoef(y_test_tab, y_pred_tab)
+auc_tab = roc_auc_score(y_test_tab, y_prob_tab)
+
+print(f"\n[TabNet Results]")
+print(f"Accuracy : {round(acc_tab * 100, 2)}%")
+print(f"MCC      : {round(mcc_tab, 4)}")
+print(f"AUC      : {round(auc_tab, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # JSON SAVE
 
@@ -2147,6 +2218,11 @@ new_result = {
     "Accuracy": round(acc_et_ec * 100, 2),
     "MCC"     : round(mcc_et_ec, 4),
     "AUC"     : round(auc_et_ec, 4)
+    },
+    "TabNet Results": {
+    "Accuracy": round(acc_tab * 100, 2),
+    "MCC"     : round(mcc_tab, 4),
+    "AUC"     : round(auc_tab, 4) 
     }
 }
 
