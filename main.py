@@ -32,6 +32,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
 import joblib                                                                                       # for checkpoint
 from sklearn.ensemble import ExtraTreesClassifier                                                   # for extra trees
+from tabpfn import TabPFNClassifier                                                                 # for tabpfn
 
 # DATA LOADING
 # ASYMMETRIC
@@ -2004,7 +2005,7 @@ print(f"AUC      : {round(auc_deep_seq, 4)}")
 
 
 
-# 26. TABNET (Google's Architecture for Tabular Data)
+# 30. TABNET (Google's Architecture for Tabular Data)
 
 print("\n------ TabNet Classifier -----\n")
 
@@ -2067,6 +2068,41 @@ print(f"AUC      : {round(auc_tab, 4)}")
 
 
 
+
+
+
+
+
+
+
+
+# 31.TabPFN
+
+
+print("\n------TabPFN------\n")
+
+from tabpfn import TabPFNClassifier
+
+tabpfn_model = TabPFNClassifier(
+    device="cuda",      # GPU ho to
+    random_state=42
+)
+
+# Training
+tabpfn_model.fit(X_train_sm, y_train_sm)
+
+# Prediction
+y_pred_tabpfn = tabpfn_model.predict(X_test)
+y_prob_tabpfn = tabpfn_model.predict_proba(X_test)[:,1]
+
+# Evaluation
+acc_tabpfn = accuracy_score(y_test, y_pred_tabpfn)
+mcc_tabpfn = matthews_corrcoef(y_test, y_pred_tabpfn)
+auc_tabpfn = roc_auc_score(y_test, y_prob_tabpfn)
+
+print(f"Accuracy : {round(acc_tabpfn*100,2)}%")
+print(f"MCC      : {round(mcc_tabpfn,4)}")
+print(f"AUC      : {round(auc_tabpfn,4)}")
 
 
 
@@ -2223,7 +2259,12 @@ new_result = {
     "Accuracy": round(acc_tab * 100, 2),
     "MCC"     : round(mcc_tab, 4),
     "AUC"     : round(auc_tab, 4) 
-    }
+    },
+    "<----TabPFN---->": {
+    "Accuracy": round(acc_tabpfn * 100,2),
+    "MCC": round(mcc_tabpfn,4),
+    "AUC": round(auc_tabpfn,4)
+    },
 }
 
 if os.path.exists("results.json"):
