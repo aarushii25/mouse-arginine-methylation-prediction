@@ -1707,6 +1707,156 @@ print(f"AUC      : {round(auc_et, 4)}")
 
 
 
+# Extra Trees + Stacking
+print("\n------Extra Trees + Stacking-----\n")
+from sklearn.ensemble import ExtraTreesClassifier
+
+et_stacking = train_or_load(
+    StackingClassifier(
+        estimators=[
+            ('rf',  RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb', XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+            ('et',  ExtraTreesClassifier(n_estimators=100, random_state=42, n_jobs=-1))  # ← Extra Trees add
+        ],
+        final_estimator=LogisticRegression(max_iter=1000),
+        cv=5,
+        n_jobs=-1
+    ),
+    "ET_Stacking",
+    X_train_sm, y_train_sm
+)
+
+y_pred_et_stack = et_stacking.predict(X_test)
+y_prob_et_stack = et_stacking.predict_proba(X_test)[:, 1]
+
+acc_et_stack = accuracy_score(y_test, y_pred_et_stack)
+mcc_et_stack = matthews_corrcoef(y_test, y_pred_et_stack)
+auc_et_stack = roc_auc_score(y_test, y_prob_et_stack)
+
+print(f"Accuracy : {round(acc_et_stack * 100, 2)}%")
+print(f"MCC      : {round(mcc_et_stack, 4)}")
+print(f"AUC      : {round(auc_et_stack, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Extra Trees + ESM
+print("\n------Extra Trees + ESM-----\n")
+
+# X_esm already loaded hai
+y_et_esm = df["label"].values
+
+X_train_et_esm, X_test_et_esm, y_train_et_esm, y_test_et_esm = train_test_split(
+    X_esm, y_et_esm,
+    test_size=0.2,
+    random_state=42,
+    stratify=y_et_esm
+)
+
+smote_et_esm = SMOTE(random_state=42)
+X_train_et_esm_sm, y_train_et_esm_sm = smote_et_esm.fit_resample(X_train_et_esm, y_train_et_esm)
+
+et_esm_model = train_or_load(
+    ExtraTreesClassifier(n_estimators=100, random_state=42, n_jobs=-1),
+    "ET_ESM",
+    X_train_et_esm_sm, y_train_et_esm_sm
+)
+
+y_pred_et_esm = et_esm_model.predict(X_test_et_esm)
+y_prob_et_esm = et_esm_model.predict_proba(X_test_et_esm)[:, 1]
+
+acc_et_esm = accuracy_score(y_test_et_esm, y_pred_et_esm)
+mcc_et_esm = matthews_corrcoef(y_test_et_esm, y_pred_et_esm)
+auc_et_esm = roc_auc_score(y_test_et_esm, y_prob_et_esm)
+
+print(f"Accuracy : {round(acc_et_esm * 100, 2)}%")
+print(f"MCC      : {round(mcc_et_esm, 4)}")
+print(f"AUC      : {round(auc_et_esm, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Extra Trees + ESM + Stacking
+print("\n------Extra Trees + ESM + Stacking-----\n")
+
+# Handcrafted + ESM combine
+X_et_esm_combined = np.hstack([X_aac, X_dpc, X_entropy, X_phys, X_esm])
+y_et_esm_combined = df["label"].values
+
+X_train_et_ec, X_test_et_ec, y_train_et_ec, y_test_et_ec = train_test_split(
+    X_et_esm_combined, y_et_esm_combined,
+    test_size=0.2,
+    random_state=42,
+    stratify=y_et_esm_combined
+)
+
+smote_et_ec = SMOTE(random_state=42)
+X_train_et_ec_sm, y_train_et_ec_sm = smote_et_ec.fit_resample(X_train_et_ec, y_train_et_ec)
+
+et_esm_stack = train_or_load(
+    StackingClassifier(
+        estimators=[
+            ('rf',   RandomForestClassifier(n_estimators=100, random_state=42)),
+            ('xgb',  XGBClassifier(n_estimators=100, random_state=42, eval_metric='logloss')),
+            ('lgbm', LGBMClassifier(n_estimators=100, random_state=42, verbose=-1)),
+            ('et',   ExtraTreesClassifier(n_estimators=100, random_state=42, n_jobs=-1))
+        ],
+        final_estimator=LogisticRegression(max_iter=1000),
+        cv=5,
+        n_jobs=-1
+    ),
+    "ET_ESM_Stacking",
+    X_train_et_ec_sm, y_train_et_ec_sm
+)
+
+y_pred_et_ec = et_esm_stack.predict(X_test_et_ec)
+y_prob_et_ec = et_esm_stack.predict_proba(X_test_et_ec)[:, 1]
+
+acc_et_ec = accuracy_score(y_test_et_ec, y_pred_et_ec)
+mcc_et_ec = matthews_corrcoef(y_test_et_ec, y_pred_et_ec)
+auc_et_ec = roc_auc_score(y_test_et_ec, y_prob_et_ec)
+
+print(f"Accuracy : {round(acc_et_ec * 100, 2)}%")
+print(f"MCC      : {round(mcc_et_ec, 4)}")
+print(f"AUC      : {round(auc_et_ec, 4)}")
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1841,6 +1991,21 @@ new_result = {
     "MCC"     : round(mcc_et, 4),
     "AUC"     : round(auc_et, 4)
     },
+    "<----Extra Trees + Stacking---->": {
+    "Accuracy": round(acc_et_stack * 100, 2),
+    "MCC"     : round(mcc_et_stack, 4),
+    "AUC"     : round(auc_et_stack, 4)
+    },
+    "<----Extra Trees + ESM---->": {
+    "Accuracy": round(acc_et_esm * 100, 2),
+    "MCC"     : round(mcc_et_esm, 4),
+    "AUC"     : round(auc_et_esm, 4)
+    },
+    "<----Extra Trees + ESM + Stacking---->": {
+    "Accuracy": round(acc_et_ec * 100, 2),
+    "MCC"     : round(mcc_et_ec, 4),
+    "AUC"     : round(auc_et_ec, 4)
+    }
 }
 
 if os.path.exists("results.json"):
