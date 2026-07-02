@@ -1707,7 +1707,7 @@ print(f"AUC      : {round(auc_et, 4)}")
 
 
 
-# Extra Trees + Stacking
+# 26.Extra Trees + Stacking
 print("\n------Extra Trees + Stacking-----\n")
 from sklearn.ensemble import ExtraTreesClassifier
 
@@ -1755,7 +1755,7 @@ print(f"AUC      : {round(auc_et_stack, 4)}")
 
 
 
-# Extra Trees + ESM
+#27. Extra Trees + ESM
 print("\n------Extra Trees + ESM-----\n")
 
 # X_esm already loaded hai
@@ -1803,10 +1803,10 @@ print(f"AUC      : {round(auc_et_esm, 4)}")
 
 
 
-# Extra Trees + ESM + Stacking
+#28. Extra Trees + ESM + Stacking
 print("\n------Extra Trees + ESM + Stacking-----\n")
 
-# Handcrafted + ESM combine
+
 X_et_esm_combined = np.hstack([X_aac, X_dpc, X_entropy, X_phys, X_esm])
 y_et_esm_combined = df["label"].values
 
@@ -1846,6 +1846,148 @@ auc_et_ec = roc_auc_score(y_test_et_ec, y_prob_et_ec)
 print(f"Accuracy : {round(acc_et_ec * 100, 2)}%")
 print(f"MCC      : {round(mcc_et_ec, 4)}")
 print(f"AUC      : {round(auc_et_ec, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 29. 1D-CNN + BiLSTM + Attention
+
+print("\n------1D-CNN + BiLSTM + Attention-----\n")
+
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.utils.data import DataLoader, TensorDataset
+
+# --- A. DEFINE THE PYTORCH ARCHITECTURE ---
+class CNN_BiLSTM_Attention(nn.Module):
+    def __init__(self, vocab_size=25, embedding_dim=128, cnn_filters=64, lstm_hidden=64):
+        super(CNN_BiLSTM_Attention, self).__init__()
+        self.embedding = nn.Embedding(vocab_size, embedding_dim, padding_idx=0)
+        self.conv1d = nn.Conv1d(embedding_dim, cnn_filters, kernel_size=3, padding=1)
+        self.bilstm = nn.LSTM(cnn_filters, lstm_hidden, batch_first=True, bidirectional=True)
+        self.attention = nn.Linear(lstm_hidden * 2, 1)
+        self.fc1 = nn.Linear(lstm_hidden * 2, 64)
+        self.dropout = nn.Dropout(0.4)
+        self.fc2 = nn.Linear(64, 1)
+
+    def forward(self, x):
+        embedded = self.embedding(x)                     # (Batch, Seq_Len, Embed_Dim)
+        cnn_in = embedded.permute(0, 2, 1)               # (Batch, Embed_Dim, Seq_Len)
+        cnn_out = F.relu(self.conv1d(cnn_in))            # (Batch, Filters, Seq_Len)
+        lstm_in = cnn_out.permute(0, 2, 1)               # (Batch, Seq_Len, Filters)
+        lstm_out, _ = self.bilstm(lstm_in)               # (Batch, Seq_Len, LSTM_Hidden*2)
+        attn_weights = F.softmax(self.attention(lstm_out), dim=1) 
+        context = torch.sum(attn_weights * lstm_out, dim=1) 
+        out = F.relu(self.fc1(context))
+        out = self.dropout(out)
+        out = torch.sigmoid(self.fc2(out))
+        return out.squeeze()
+
+# --- B. PREPARE RAW SEQUENCES (Tokenization) ---
+# Map amino acids to numbers
+AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY"
+vocab = {aa: idx + 1 for idx, aa in enumerate(AMINO_ACIDS)}
+MAX_LEN = 50 # Pad/truncate sequences to 50 length
+
+def encode_sequence(seq):
+    seq_str = str(seq).upper()
+    encoded = [vocab.get(aa, 0) for aa in seq_str]
+    if len(encoded) < MAX_LEN:
+        encoded += [0] * (MAX_LEN - len(encoded))
+    return encoded[:MAX_LEN]
+
+# Encode all sequences in the dataframe
+X_seq_encoded = np.array([encode_sequence(seq) for seq in df["sequence"]])
+y_labels = df["label"].values
+
+# Train / Test Split
+X_train_seq, X_test_seq, y_train_seq, y_test_seq = train_test_split(
+    X_seq_encoded, y_labels, test_size=0.2, random_state=42, stratify=y_labels
+)
+
+# Convert to PyTorch Tensors
+X_train_t = torch.tensor(X_train_seq, dtype=torch.long)
+y_train_t = torch.tensor(y_train_seq, dtype=torch.float32)
+X_test_t  = torch.tensor(X_test_seq, dtype=torch.long)
+y_test_t  = torch.tensor(y_test_seq, dtype=torch.float32)
+
+train_loader = DataLoader(TensorDataset(X_train_t, y_train_t), batch_size=32, shuffle=True)
+test_loader  = DataLoader(TensorDataset(X_test_t, y_test_t), batch_size=32, shuffle=False)
+
+# --- C. TRAIN THE MODEL ---
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+deep_seq_model = CNN_BiLSTM_Attention(vocab_size=len(vocab)+1).to(device)
+
+# Handle imbalance (equivalent to SMOTE functionality)
+neg_count = (y_train_seq == 0).sum()
+pos_count = (y_train_seq == 1).sum()
+pos_weight = torch.tensor([neg_count / pos_count]).to(device)
+
+criterion = nn.BCELoss() # Binary Cross Entropy
+optimizer = torch.optim.Adam(deep_seq_model.parameters(), lr=0.001)
+
+print(f"Training on {device} for 15 epochs...")
+deep_seq_model.train()
+for epoch in range(15):
+    total_loss = 0
+    for batch_x, batch_y in train_loader:
+        batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+        optimizer.zero_grad()
+        
+        preds = deep_seq_model(batch_x)
+        
+        # Apply manual weight for class imbalance
+        weight = batch_y * pos_weight + (1 - batch_y)
+        loss = F.binary_cross_entropy(preds, batch_y, weight=weight)
+        
+        loss.backward()
+        optimizer.step()
+        total_loss += loss.item()
+
+# --- D. EVALUATION  ---
+deep_seq_model.eval()
+y_prob_deep_seq = []
+with torch.no_grad():
+    for batch_x, _ in test_loader:
+        batch_x = batch_x.to(device)
+        probs = deep_seq_model(batch_x)
+        y_prob_deep_seq.extend(probs.cpu().numpy())
+
+y_prob_deep_seq = np.array(y_prob_deep_seq)
+y_pred_deep_seq = (y_prob_deep_seq >= 0.5).astype(int)
+
+acc_deep_seq = accuracy_score(y_test_seq, y_pred_deep_seq)
+mcc_deep_seq = matthews_corrcoef(y_test_seq, y_pred_deep_seq)
+auc_deep_seq = roc_auc_score(y_test_seq, y_prob_deep_seq)
+
+print(f"Accuracy : {round(acc_deep_seq * 100, 2)}%")
+print(f"MCC      : {round(mcc_deep_seq, 4)}")
+print(f"AUC      : {round(auc_deep_seq, 4)}")
+
+
 
 
 
