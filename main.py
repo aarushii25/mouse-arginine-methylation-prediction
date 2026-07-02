@@ -31,6 +31,7 @@ from sklearn.ensemble import StackingClassifier, VotingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
 import joblib                                                                                       # for checkpoint
+from sklearn.ensemble import ExtraTreesClassifier                                                   # for extra trees
 
 # DATA LOADING
 # ASYMMETRIC
@@ -1649,10 +1650,58 @@ acc_hyb = accuracy_score(y_test_hyb, y_pred_hyb)
 mcc_hyb = matthews_corrcoef(y_test_hyb, y_pred_hyb)
 auc_hyb = roc_auc_score(y_test_hyb, y_prob_hyb)
 
-print(f"\nFINAL HYBRID DEEP STACKING RESULTS:")
+print(f"\nHYBRID DEEP STACKING RESULTS:")
 print(f"Accuracy : {round(acc_hyb * 100, 2)}%")
 print(f"MCC      : {round(mcc_hyb, 4)}")
 print(f"AUC      : {round(auc_hyb, 4)}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 25. Extra Trees
+print("\n------Extra Trees-----\n")
+
+et_model = train_or_load(
+    ExtraTreesClassifier(
+        n_estimators=100,
+        random_state=42,
+        n_jobs=-1
+    ),
+    "Extra_Trees",
+    X_train_sm, y_train_sm
+)
+
+# Prediction
+y_pred_et = et_model.predict(X_test)
+y_prob_et = et_model.predict_proba(X_test)[:, 1]
+
+# Evaluation
+acc_et = accuracy_score(y_test, y_pred_et)
+mcc_et = matthews_corrcoef(y_test, y_pred_et)
+auc_et = roc_auc_score(y_test, y_prob_et)
+
+print(f"Accuracy : {round(acc_et * 100, 2)}%")
+print(f"MCC      : {round(mcc_et, 4)}")
+print(f"AUC      : {round(auc_et, 4)}")
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1786,7 +1835,12 @@ new_result = {
         "Accuracy": round(acc_hyb * 100, 2),
         "MCC"     : round(mcc_hyb, 4),
         "AUC"     : round(auc_hyb, 4)
-    }
+    },
+    "<----Extra Trees---->": {
+    "Accuracy": round(acc_et * 100, 2),
+    "MCC"     : round(mcc_et, 4),
+    "AUC"     : round(auc_et, 4)
+    },
 }
 
 if os.path.exists("results.json"):
